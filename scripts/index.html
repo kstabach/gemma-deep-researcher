@@ -139,6 +139,19 @@
         const { topic, max_results } = JSON.parse(data);
         if (!topic) throw new Error('missing "topic" field');
 
+        // DEBUG: topic "debug" echoes secret structure without exposing values
+        if (topic === 'debug') {
+          let info;
+          try {
+            const p = JSON.parse(secret);
+            info = 'parsed ok | tavily=' + (p.tavily ? p.tavily.slice(0,6)+'…('+p.tavily.length+')' : 'missing')
+                 + ' | brave=' + (p.brave ? p.brave.slice(0,5)+'…('+p.brave.length+')' : 'missing');
+          } catch (e) {
+            info = 'parse FAILED: ' + e.message + ' | raw type=' + typeof secret + ' len=' + (secret||'').length + ' prefix=' + String(secret||'').slice(0,30);
+          }
+          return JSON.stringify({ error: 'DEBUG: ' + info });
+        }
+
         let keys;
         try {
           keys = JSON.parse(secret);
