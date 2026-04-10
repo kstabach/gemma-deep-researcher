@@ -143,7 +143,7 @@
         if (topic === 'debug') {
           let info;
           try {
-            const p = JSON.parse(secret);
+            const p = JSON.parse((secret || '').trim().replace(/^"|"$/g, ''));
             info = 'parsed ok | tavily=' + (p.tavily ? p.tavily.slice(0,6)+'…('+p.tavily.length+')' : 'missing')
                  + ' | brave=' + (p.brave ? p.brave.slice(0,5)+'…('+p.brave.length+')' : 'missing');
           } catch (e) {
@@ -154,7 +154,8 @@
 
         let keys;
         try {
-          keys = JSON.parse(secret);
+          const raw = (secret || '').trim().replace(/^"|"$/g, '');
+          keys = JSON.parse(raw);
         } catch (_) {
           throw new Error('secret must be JSON: {"tavily":"...","brave":"..."}');
         }
