@@ -139,6 +139,16 @@
         const { topic, max_results } = JSON.parse(data);
         if (!topic) throw new Error('missing "topic" field');
 
+        // NETTEST: topic "nettest" checks if fetch works at all in this webview
+        if (topic === 'nettest') {
+          try {
+            const r = await fetch('https://api.github.com/zen', { mode: 'cors', credentials: 'omit', cache: 'no-store' });
+            return JSON.stringify({ error: 'NETTEST: fetch ok status=' + r.status });
+          } catch (e) {
+            return JSON.stringify({ error: 'NETTEST: fetch FAILED type=' + (e instanceof TypeError ? 'TypeError' : e.name) + ' msg=' + e.message });
+          }
+        }
+
         // DEBUG: topic "debug" echoes secret structure without exposing values
         if (topic === 'debug') {
           let info;
