@@ -139,6 +139,11 @@
         const { topic, max_results } = JSON.parse(data);
         if (!topic) throw new Error('missing "topic" field');
 
+        // PING: simplest possible test — no network, no secret, just proves run_js works
+        if (topic === 'ping') {
+          return JSON.stringify({ error: 'PING: pong — run_js is working' });
+        }
+
         // NETTEST: topic "nettest" checks if fetch works at all in this webview
         if (topic === 'nettest') {
           try {
