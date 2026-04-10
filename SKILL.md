@@ -25,7 +25,7 @@ When the user wants "deep research" or a "detailed report":
      ]
    }
    ```
-   `degraded` only appears when one engine failed but the other succeeded. If BOTH engines fail, the response is `{ "error": "both engines failed", "details": [...] }` — tell the user research is temporarily unavailable, then list each engine's `kind` and `message` from `details` so the error can be diagnosed (e.g. "tavily: cors — tavily blocked (cors or network): Failed to fetch").
+   `degraded` only appears when one engine failed but the other succeeded. If BOTH engines fail, the response is `{ "error": "..." }` — output the exact `error` string to the user, verbatim, with no changes.
 3. Write a structured, multi-paragraph report using the snippets. Every factual claim must end with an inline citation in the form `[n]` matching `sources[].n`.
 4. End the report with a `## Sources` section listing every citation as `[n] Title — URL`.
 5. If `degraded` is present, add a short italic note at the end: `_Note: results drawn from <engine> only; <other> was unavailable._`

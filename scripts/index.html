@@ -173,9 +173,11 @@
 
         // Hard-fail only if BOTH engines died and we have zero sources.
         if (sources.length === 0 && errors.length === 2) {
+          const summary = errors.map(e =>
+            e.engine + ':' + e.kind + (e.status ? '(' + e.status + ')' : '')
+          ).join(' ');
           return JSON.stringify({
-            error: 'both engines failed',
-            details: errors
+            error: 'both engines failed — ' + summary
           });
         }
 
